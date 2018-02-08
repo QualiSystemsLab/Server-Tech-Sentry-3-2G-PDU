@@ -29,8 +29,8 @@ class PmPduAutoloader:
             relative_address = index
             unique_identifier = '%s.%s' % (pdu_name, index)
 
-            rv.resources.append(self.makeres(name, 'Generic Power Socket', relative_address, unique_identifier))
-            rv.attributes.append(self.makeattr(relative_address, 'Port Description', attribute['outletName']))
+            rv.resources.append(self.makeres(name, 'SentryPdu.PowerSocket', relative_address, unique_identifier))
+            #rv.attributes.append(self.makeattr(relative_address, 'CS_PowerSocket.Model Name', attribute['outletName']))
 
         return rv
 
