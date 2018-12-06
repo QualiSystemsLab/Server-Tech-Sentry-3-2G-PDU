@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 
 """
-Tests for `SentryPduDriver`
+Tests for `Sentry3G2PduDriver`
 """
 
 import unittest
 
-from driver import SentryPduDriver
+from driver import Sentry3G2PduDriver
 
 
-class TestSentryPduDriver(unittest.TestCase):
+class TestSentry3G2PduDriver(unittest.TestCase):
 
     def setUp(self):
         pass

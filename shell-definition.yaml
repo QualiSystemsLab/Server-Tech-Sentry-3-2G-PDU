@@ -1,9 +1,9 @@
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 metadata:
-  template_name: SentryPdu
-  template_author: Anonymous
-  template_version: 0.1.0
+  template_name: Sentry3G2Pdu
+  template_author: ksaper, upd. tims@quali.com
+  template_version: 1.0.0
   template_icon: shell-icon.png
 
 description: >
@@ -14,7 +14,7 @@ imports:
 
 node_types:
 
-  vendor.switch.SentryPdu:
+  vendor.switch.Sentry3G2Pdu:
     derived_from: cloudshell.nodes.PDU
     properties:
     #  my_property:
@@ -68,5 +68,5 @@ node_types:
         file: shell-icon.png
         type: tosca.artifacts.File
       driver:
-        file: SentryPduDriver.zip
+        file: Sentry3G2PduDriver.zip
         type: tosca.artifacts.File

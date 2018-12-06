@@ -9,7 +9,7 @@ class PmPduAutoloader:
         self.context = context
         self.logger = LogHelper.get_logger(self.context)
         self.snmp_handler = SnmpHandler(self.context).get_raw_handler('get')
-        self.resource = SentryPdu.create_from_context(context)
+        self.resource = Sentry3G2Pdu.create_from_context(context)
 
     def autoload(self):
         rv = AutoLoadDetails(resources=[], attributes=[])
@@ -17,9 +17,9 @@ class PmPduAutoloader:
         rv.attributes.append(self.makeattr('', 'CS_PDU.Location', self.snmp_handler.get_property('SNMPv2-MIB', 'sysLocation', 0)))
         # rv.attributes.append(self.makeattr('', 'Location', self.snmp_handler.get_property('SNMPv2-MIB', 'systemLocation', 0)))
         rv.attributes.append(self.makeattr('', 'CS_PDU.Model', self.snmp_handler.get_property('Sentry3-MIB', 'towerModelNumber', 0)))
-        rv.attributes.append(self.makeattr('', 'SentryPdu.Serial Number', self.snmp_handler.get_property('Sentry3-MIB', 'towerProductSN', 0)))
+        rv.attributes.append(self.makeattr('', 'Sentry3G2Pdu.Serial Number', self.snmp_handler.get_property('Sentry3-MIB', 'towerProductSN', 0)))
         rv.attributes.append(self.makeattr('', 'CS_PDU.Vendor', 'Sentry'))
-        rv.attributes.append(self.makeattr('', 'SentryPdu.System Version', self.snmp_handler.get_property('Sentry3-MIB', 'systemVersion', 0)))
+        rv.attributes.append(self.makeattr('', 'Sentry3G2Pdu.System Version', self.snmp_handler.get_property('Sentry3-MIB', 'systemVersion', 0)))
 
         pdu_name = self.snmp_handler.get_property('SNMPv2-MIB', 'sysName', 0)
 
@@ -29,7 +29,7 @@ class PmPduAutoloader:
             relative_address = index
             unique_identifier = '%s.%s' % (pdu_name, index)
 
-            rv.resources.append(self.makeres(name, 'SentryPdu.PowerSocket', relative_address, unique_identifier))
+            rv.resources.append(self.makeres(name, 'Sentry3G2Pdu.PowerSocket', relative_address, unique_identifier))
             #rv.attributes.append(self.makeattr(relative_address, 'CS_PowerSocket.Model Name', attribute['outletName']))
 
         return rv

@@ -1,4 +1,4 @@
-<Driver Description="Describe the purpose of your CloudShell shell" MainClass="driver.SentryPduDriver" Name="SentryPduDriver" Version="1.0.0">
+<Driver Description="Describe the purpose of your CloudShell shell" MainClass="driver.Sentry3G2PduDriver" Name="Sentry3G2PduDriver" Version="1.0.0">
     <Layout>
         <Command Name="PowerOn" DisplayName="Power On" Tags="power" Description="Power on device">
         </Command>

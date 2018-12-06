@@ -10,7 +10,7 @@ from cloudshell.shell.core.context import AutoLoadDetails, InitCommandContext, R
 from log_helper import LogHelper
 
 
-class SentryPduDriver (ResourceDriverInterface):
+class Sentry3G2PduDriver (ResourceDriverInterface):
 
     def __init__(self):
         """

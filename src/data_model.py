@@ -72,14 +72,14 @@ class LegacyUtils(object):
         return inspect.getmembers(sys.modules[__name__], inspect.isclass)
 
 
-class SentryPdu(object):
+class Sentry3G2Pdu(object):
     def __init__(self, name):
         """
         
         """
         self.attributes = {}
         self.resources = {}
-        self._cloudshell_model_name = 'SentryPdu'
+        self._cloudshell_model_name = 'Sentry3G2Pdu'
         self._name = name
 
     def add_sub_resource(self, relative_path, sub_resource):
@@ -92,9 +92,9 @@ class SentryPdu(object):
         :param context: cloudshell.shell.core.driver_context.ResourceCommandContext
         :type context: cloudshell.shell.core.driver_context.ResourceCommandContext
         :return:
-        :rtype SentryPdu
+        :rtype Sentry3G2Pdu
         """
-        result = SentryPdu(name=context.resource.name)
+        result = Sentry3G2Pdu(name=context.resource.name)
         for attr in context.resource.attributes:
             result.attributes[attr] = context.resource.attributes[attr]
         return result
@@ -152,14 +152,14 @@ class SentryPdu(object):
         Returns the name of the Cloudshell model
         :return:
         """
-        return 'SentryPdu'
+        return 'Sentry3G2Pdu'
 
     @property
     def serial_number(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.Serial Number'] if 'SentryPdu.Serial Number' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Serial Number'] if 'Sentry3G2Pdu.Serial Number' in self.attributes else None
 
     @serial_number.setter
     def serial_number(self, value):
@@ -167,14 +167,14 @@ class SentryPdu(object):
         Factory Issued Serial Number of the device
         :type value: str
         """
-        self.attributes['SentryPdu.Serial Number'] = value
+        self.attributes['Sentry3G2Pdu.Serial Number'] = value
 
     @property
     def system_version(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.System Version'] if 'SentryPdu.System Version' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.System Version'] if 'Sentry3G2Pdu.System Version' in self.attributes else None
 
     @system_version.setter
     def system_version(self, value):
@@ -182,14 +182,14 @@ class SentryPdu(object):
         OS/Firmware version on the device
         :type value: str
         """
-        self.attributes['SentryPdu.System Version'] = value
+        self.attributes['Sentry3G2Pdu.System Version'] = value
 
     @property
     def user(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.User'] if 'SentryPdu.User' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.User'] if 'Sentry3G2Pdu.User' in self.attributes else None
 
     @user.setter
     def user(self, value):
@@ -197,14 +197,14 @@ class SentryPdu(object):
         User with administrative privileges
         :type value: str
         """
-        self.attributes['SentryPdu.User'] = value
+        self.attributes['Sentry3G2Pdu.User'] = value
 
     @property
     def password(self):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.Password'] if 'SentryPdu.Password' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Password'] if 'Sentry3G2Pdu.Password' in self.attributes else None
 
     @password.setter
     def password(self, value):
@@ -212,14 +212,14 @@ class SentryPdu(object):
         
         :type value: string
         """
-        self.attributes['SentryPdu.Password'] = value
+        self.attributes['Sentry3G2Pdu.Password'] = value
 
     @property
     def enable_password(self):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.Enable Password'] if 'SentryPdu.Enable Password' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Enable Password'] if 'Sentry3G2Pdu.Enable Password' in self.attributes else None
 
     @enable_password.setter
     def enable_password(self, value):
@@ -227,14 +227,14 @@ class SentryPdu(object):
         The enable password is required by some CLI protocols such as Telnet and is required according to the device configuration.
         :type value: string
         """
-        self.attributes['SentryPdu.Enable Password'] = value
+        self.attributes['Sentry3G2Pdu.Enable Password'] = value
 
     @property
     def power_management(self):
         """
         :rtype: bool
         """
-        return self.attributes['SentryPdu.Power Management'] if 'SentryPdu.Power Management' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Power Management'] if 'Sentry3G2Pdu.Power Management' in self.attributes else None
 
     @power_management.setter
     def power_management(self, value=True):
@@ -242,14 +242,14 @@ class SentryPdu(object):
         Used by the power management orchestration, if enabled, to determine whether to automatically manage the device power status. Enabled by default.
         :type value: bool
         """
-        self.attributes['SentryPdu.Power Management'] = value
+        self.attributes['Sentry3G2Pdu.Power Management'] = value
 
     @property
     def contact_name(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.Contact Name'] if 'SentryPdu.Contact Name' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Contact Name'] if 'Sentry3G2Pdu.Contact Name' in self.attributes else None
 
     @contact_name.setter
     def contact_name(self, value):
@@ -257,14 +257,14 @@ class SentryPdu(object):
         The name of a contact registered in the device.
         :type value: str
         """
-        self.attributes['SentryPdu.Contact Name'] = value
+        self.attributes['Sentry3G2Pdu.Contact Name'] = value
 
     @property
     def sessions_concurrency_limit(self):
         """
         :rtype: float
         """
-        return self.attributes['SentryPdu.Sessions Concurrency Limit'] if 'SentryPdu.Sessions Concurrency Limit' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Sessions Concurrency Limit'] if 'Sentry3G2Pdu.Sessions Concurrency Limit' in self.attributes else None
 
     @sessions_concurrency_limit.setter
     def sessions_concurrency_limit(self, value='1'):
@@ -272,14 +272,14 @@ class SentryPdu(object):
         The maximum number of concurrent sessions that the driver will open to the device. Default is 1 (no concurrency).
         :type value: float
         """
-        self.attributes['SentryPdu.Sessions Concurrency Limit'] = value
+        self.attributes['Sentry3G2Pdu.Sessions Concurrency Limit'] = value
 
     @property
     def snmp_read_community(self):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.SNMP Read Community'] if 'SentryPdu.SNMP Read Community' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.SNMP Read Community'] if 'Sentry3G2Pdu.SNMP Read Community' in self.attributes else None
 
     @snmp_read_community.setter
     def snmp_read_community(self, value):
@@ -287,14 +287,14 @@ class SentryPdu(object):
         The SNMP Read-Only Community String is like a password. It is sent along with each SNMP Get-Request and allows (or denies) access to device.
         :type value: string
         """
-        self.attributes['SentryPdu.SNMP Read Community'] = value
+        self.attributes['Sentry3G2Pdu.SNMP Read Community'] = value
 
     @property
     def snmp_write_community(self):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.SNMP Write Community'] if 'SentryPdu.SNMP Write Community' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.SNMP Write Community'] if 'Sentry3G2Pdu.SNMP Write Community' in self.attributes else None
 
     @snmp_write_community.setter
     def snmp_write_community(self, value):
@@ -302,14 +302,14 @@ class SentryPdu(object):
         The SNMP Write Community String is like a password. It is sent along with each SNMP Set-Request and allows (or denies) chaning MIBs values.
         :type value: string
         """
-        self.attributes['SentryPdu.SNMP Write Community'] = value
+        self.attributes['Sentry3G2Pdu.SNMP Write Community'] = value
 
     @property
     def snmp_v3_user(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.SNMP V3 User'] if 'SentryPdu.SNMP V3 User' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.SNMP V3 User'] if 'Sentry3G2Pdu.SNMP V3 User' in self.attributes else None
 
     @snmp_v3_user.setter
     def snmp_v3_user(self, value):
@@ -317,14 +317,14 @@ class SentryPdu(object):
         Relevant only in case SNMP V3 is in use.
         :type value: str
         """
-        self.attributes['SentryPdu.SNMP V3 User'] = value
+        self.attributes['Sentry3G2Pdu.SNMP V3 User'] = value
 
     @property
     def snmp_v3_password(self):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.SNMP V3 Password'] if 'SentryPdu.SNMP V3 Password' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.SNMP V3 Password'] if 'Sentry3G2Pdu.SNMP V3 Password' in self.attributes else None
 
     @snmp_v3_password.setter
     def snmp_v3_password(self, value):
@@ -332,14 +332,14 @@ class SentryPdu(object):
         Relevant only in case SNMP V3 is in use.
         :type value: string
         """
-        self.attributes['SentryPdu.SNMP V3 Password'] = value
+        self.attributes['Sentry3G2Pdu.SNMP V3 Password'] = value
 
     @property
     def snmp_v3_private_key(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.SNMP V3 Private Key'] if 'SentryPdu.SNMP V3 Private Key' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.SNMP V3 Private Key'] if 'Sentry3G2Pdu.SNMP V3 Private Key' in self.attributes else None
 
     @snmp_v3_private_key.setter
     def snmp_v3_private_key(self, value):
@@ -347,14 +347,14 @@ class SentryPdu(object):
         Relevant only in case SNMP V3 is in use.
         :type value: str
         """
-        self.attributes['SentryPdu.SNMP V3 Private Key'] = value
+        self.attributes['Sentry3G2Pdu.SNMP V3 Private Key'] = value
 
     @property
     def snmp_version(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.SNMP Version'] if 'SentryPdu.SNMP Version' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.SNMP Version'] if 'Sentry3G2Pdu.SNMP Version' in self.attributes else None
 
     @snmp_version.setter
     def snmp_version(self, value=''):
@@ -362,14 +362,14 @@ class SentryPdu(object):
         The version of SNMP to use. Possible values are v1, v2c and v3.
         :type value: str
         """
-        self.attributes['SentryPdu.SNMP Version'] = value
+        self.attributes['Sentry3G2Pdu.SNMP Version'] = value
 
     @property
     def enable_snmp(self):
         """
         :rtype: bool
         """
-        return self.attributes['SentryPdu.Enable SNMP'] if 'SentryPdu.Enable SNMP' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Enable SNMP'] if 'Sentry3G2Pdu.Enable SNMP' in self.attributes else None
 
     @enable_snmp.setter
     def enable_snmp(self, value=True):
@@ -377,14 +377,14 @@ class SentryPdu(object):
         If set to True and SNMP isn???t enabled yet in the device the Shell will automatically enable SNMP in the device when Autoload command is called. SNMP must be enabled on the device for the Autoload command to run successfully. True by default.
         :type value: bool
         """
-        self.attributes['SentryPdu.Enable SNMP'] = value
+        self.attributes['Sentry3G2Pdu.Enable SNMP'] = value
 
     @property
     def disable_snmp(self):
         """
         :rtype: bool
         """
-        return self.attributes['SentryPdu.Disable SNMP'] if 'SentryPdu.Disable SNMP' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Disable SNMP'] if 'Sentry3G2Pdu.Disable SNMP' in self.attributes else None
 
     @disable_snmp.setter
     def disable_snmp(self, value=False):
@@ -392,14 +392,14 @@ class SentryPdu(object):
         If set to True SNMP will be disabled automatically by the Shell after the Autoload command execution is completed. False by default.
         :type value: bool
         """
-        self.attributes['SentryPdu.Disable SNMP'] = value
+        self.attributes['Sentry3G2Pdu.Disable SNMP'] = value
 
     @property
     def console_server_ip_address(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.Console Server IP Address'] if 'SentryPdu.Console Server IP Address' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Console Server IP Address'] if 'Sentry3G2Pdu.Console Server IP Address' in self.attributes else None
 
     @console_server_ip_address.setter
     def console_server_ip_address(self, value):
@@ -407,14 +407,14 @@ class SentryPdu(object):
         The IP address of the console server, in IPv4 format.
         :type value: str
         """
-        self.attributes['SentryPdu.Console Server IP Address'] = value
+        self.attributes['Sentry3G2Pdu.Console Server IP Address'] = value
 
     @property
     def console_user(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.Console User'] if 'SentryPdu.Console User' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Console User'] if 'Sentry3G2Pdu.Console User' in self.attributes else None
 
     @console_user.setter
     def console_user(self, value):
@@ -422,14 +422,14 @@ class SentryPdu(object):
         
         :type value: str
         """
-        self.attributes['SentryPdu.Console User'] = value
+        self.attributes['Sentry3G2Pdu.Console User'] = value
 
     @property
     def console_port(self):
         """
         :rtype: float
         """
-        return self.attributes['SentryPdu.Console Port'] if 'SentryPdu.Console Port' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Console Port'] if 'Sentry3G2Pdu.Console Port' in self.attributes else None
 
     @console_port.setter
     def console_port(self, value):
@@ -437,14 +437,14 @@ class SentryPdu(object):
         The port on the console server, usually TCP port, which the device is associated with.
         :type value: float
         """
-        self.attributes['SentryPdu.Console Port'] = value
+        self.attributes['Sentry3G2Pdu.Console Port'] = value
 
     @property
     def console_password(self):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.Console Password'] if 'SentryPdu.Console Password' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Console Password'] if 'Sentry3G2Pdu.Console Password' in self.attributes else None
 
     @console_password.setter
     def console_password(self, value):
@@ -452,14 +452,14 @@ class SentryPdu(object):
         
         :type value: string
         """
-        self.attributes['SentryPdu.Console Password'] = value
+        self.attributes['Sentry3G2Pdu.Console Password'] = value
 
     @property
     def cli_connection_type(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.CLI Connection Type'] if 'SentryPdu.CLI Connection Type' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.CLI Connection Type'] if 'Sentry3G2Pdu.CLI Connection Type' in self.attributes else None
 
     @cli_connection_type.setter
     def cli_connection_type(self, value='Auto'):
@@ -467,14 +467,14 @@ class SentryPdu(object):
         The CLI connection type that will be used by the driver. Possible values are Auto, Console, SSH, Telnet and TCP. If Auto is selected the driver will choose the available connection type automatically. Default value is Auto.
         :type value: str
         """
-        self.attributes['SentryPdu.CLI Connection Type'] = value
+        self.attributes['Sentry3G2Pdu.CLI Connection Type'] = value
 
     @property
     def cli_tcp_port(self):
         """
         :rtype: float
         """
-        return self.attributes['SentryPdu.CLI TCP Port'] if 'SentryPdu.CLI TCP Port' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.CLI TCP Port'] if 'Sentry3G2Pdu.CLI TCP Port' in self.attributes else None
 
     @cli_tcp_port.setter
     def cli_tcp_port(self, value):
@@ -482,14 +482,14 @@ class SentryPdu(object):
         TCP Port to user for CLI connection. If kept empty a default CLI port will be used based on the chosen protocol, for example Telnet will use port 23.
         :type value: float
         """
-        self.attributes['SentryPdu.CLI TCP Port'] = value
+        self.attributes['Sentry3G2Pdu.CLI TCP Port'] = value
 
     @property
     def backup_location(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.Backup Location'] if 'SentryPdu.Backup Location' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Backup Location'] if 'Sentry3G2Pdu.Backup Location' in self.attributes else None
 
     @backup_location.setter
     def backup_location(self, value):
@@ -497,14 +497,14 @@ class SentryPdu(object):
         Used by the save/restore orchestration to determine where backups should be saved.
         :type value: str
         """
-        self.attributes['SentryPdu.Backup Location'] = value
+        self.attributes['Sentry3G2Pdu.Backup Location'] = value
 
     @property
     def backup_type(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.Backup Type'] if 'SentryPdu.Backup Type' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Backup Type'] if 'Sentry3G2Pdu.Backup Type' in self.attributes else None
 
     @backup_type.setter
     def backup_type(self, value='File System'):
@@ -512,14 +512,14 @@ class SentryPdu(object):
         Supported protocols for saving and restoring of configuration and firmware files. Possible values are 'File System' 'FTP' and 'TFTP'. Default value is 'File System'.
         :type value: str
         """
-        self.attributes['SentryPdu.Backup Type'] = value
+        self.attributes['Sentry3G2Pdu.Backup Type'] = value
 
     @property
     def backup_user(self):
         """
         :rtype: str
         """
-        return self.attributes['SentryPdu.Backup User'] if 'SentryPdu.Backup User' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Backup User'] if 'Sentry3G2Pdu.Backup User' in self.attributes else None
 
     @backup_user.setter
     def backup_user(self, value):
@@ -527,14 +527,14 @@ class SentryPdu(object):
         Username for the storage server used for saving and restoring of configuration and firmware files.
         :type value: str
         """
-        self.attributes['SentryPdu.Backup User'] = value
+        self.attributes['Sentry3G2Pdu.Backup User'] = value
 
     @property
     def backup_password(self):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.Backup Password'] if 'SentryPdu.Backup Password' in self.attributes else None
+        return self.attributes['Sentry3G2Pdu.Backup Password'] if 'Sentry3G2Pdu.Backup Password' in self.attributes else None
 
     @backup_password.setter
     def backup_password(self, value):
@@ -542,7 +542,7 @@ class SentryPdu(object):
         Password for the storage server used for saving and restoring of configuration and firmware files.
         :type value: string
         """
-        self.attributes['SentryPdu.Backup Password'] = value
+        self.attributes['Sentry3G2Pdu.Backup Password'] = value
 
     @property
     def name(self):
@@ -657,7 +657,7 @@ class PowerSocket(object):
         """
         self.attributes = {}
         self.resources = {}
-        self._cloudshell_model_name = 'SentryPdu.PowerSocket'
+        self._cloudshell_model_name = 'Sentry3G2Pdu.PowerSocket'
         self._name = name
 
     def add_sub_resource(self, relative_path, sub_resource):
