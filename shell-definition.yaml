@@ -23,14 +23,14 @@ node_types:
     #    description: Some attribute description
     #    constraints:
     #      - valid_values: [fast, slow]
-      Serial Number:
+      NIC Serial Number:
         type: string
         description: Factory Issued Serial Number of the device
         tags: [setting, read_only]
       System Version:
         type: string
         description: OS/Firmware version on the device
-        tags: [configuration, read_only]
+        tags: [setting, read_only]
     capabilities:
       auto_discovery_capability:
         type: cloudshell.capabilities.AutoDiscovery
@@ -46,8 +46,10 @@ node_types:
             default: Describe the resource shell template
           User:
             type: string
+            default: admn
           Password:
             type: cloudshell.datatypes.Password
+            default: admn
           SNMP Version:
             type: string
             default: v2c
@@ -56,7 +58,7 @@ node_types:
             default: public
           SNMP Write Community:
             type: string
-            default: public
+            default: private
           SNMP V3 User:
             type: string
           SNMP V3 Private Key:

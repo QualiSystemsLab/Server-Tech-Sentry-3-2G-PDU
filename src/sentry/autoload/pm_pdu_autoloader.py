@@ -14,23 +14,28 @@ class PmPduAutoloader:
     def autoload(self):
         rv = AutoLoadDetails(resources=[], attributes=[])
 
-        rv.attributes.append(self.makeattr('', 'CS_PDU.Location', self.snmp_handler.get_property('SNMPv2-MIB', 'sysLocation', 0)))
-        # rv.attributes.append(self.makeattr('', 'Location', self.snmp_handler.get_property('SNMPv2-MIB', 'systemLocation', 0)))
-        rv.attributes.append(self.makeattr('', 'CS_PDU.Model', self.snmp_handler.get_property('Sentry3-MIB', 'towerModelNumber', 0)))
-        rv.attributes.append(self.makeattr('', 'Sentry3G2Pdu.Serial Number', self.snmp_handler.get_property('Sentry3-MIB', 'towerProductSN', 0)))
-        rv.attributes.append(self.makeattr('', 'CS_PDU.Vendor', 'Sentry'))
+        sysobject = self.snmp_handler.get_property('SNMPv2-MIB', 'sysObjectID', 0, return_type="str")
+        if sysobject != 'Sentry3-MIB::sentry3':
+            raise Exception("Device does not appear to be a Sentry3")
+
+        # rv.attributes.append(self.makeattr('', 'CS_PDU.Location', self.snmp_handler.get_property('SNMPv2-MIB', 'sysLocation', 0)))
+        rv.attributes.append(self.makeattr('', 'CS_PDU.Location', self.snmp_handler.get_property('Sentry3-MIB', 'systemLocation', 0)))
+        rv.attributes.append(self.makeattr('', 'CS_PDU.Model',  'Sentry3'))
+        rv.attributes.append(self.makeattr('', 'Sentry3G2Pdu.NIC Serial Number', self.snmp_handler.get_property('Sentry3-MIB', 'systemNICSerialNumber', 0)))
+        rv.attributes.append(self.makeattr('', 'CS_PDU.Vendor', 'ServerTech'))
         rv.attributes.append(self.makeattr('', 'Sentry3G2Pdu.System Version', self.snmp_handler.get_property('Sentry3-MIB', 'systemVersion', 0)))
 
         pdu_name = self.snmp_handler.get_property('SNMPv2-MIB', 'sysName', 0)
 
         outlet_table = self.snmp_handler.get_table('Sentry3-MIB', 'outletTable')
         for index, attribute in outlet_table.iteritems():
-            name = 'Outlet %s' % index
-            relative_address = index
-            unique_identifier = '%s.%s' % (pdu_name, index)
+            name = attribute['outletID']
+            relative_address = name
+            unique_identifier = '%s.%s' % (pdu_name, name)
 
             rv.resources.append(self.makeres(name, 'Sentry3G2Pdu.PowerSocket', relative_address, unique_identifier))
-            #rv.attributes.append(self.makeattr(relative_address, 'CS_PowerSocket.Model Name', attribute['outletName']))
+            #TODO The outletName should be added as an attribute for the power sockets
+            # rv.attributes.append(self.makeattr(relative_address, 'CS_PowerSocket.Model Name', attribute['outletName']))
 
         return rv
 
