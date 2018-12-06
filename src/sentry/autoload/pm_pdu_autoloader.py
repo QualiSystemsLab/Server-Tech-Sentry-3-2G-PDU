@@ -16,7 +16,7 @@ class PmPduAutoloader:
 
         sysobject = self.snmp_handler.get_property('SNMPv2-MIB', 'sysObjectID', 0, return_type="str")
         if sysobject != 'Sentry3-MIB::sentry3':
-            raise Exception("Device does not appear to be a Sentry3")
+            raise AssertionError("Device does not appear to be a Sentry3")
 
         # rv.attributes.append(self.makeattr('', 'CS_PDU.Location', self.snmp_handler.get_property('SNMPv2-MIB', 'sysLocation', 0)))
         rv.attributes.append(self.makeattr('', 'CS_PDU.Location', self.snmp_handler.get_property('Sentry3-MIB', 'systemLocation', 0)))
