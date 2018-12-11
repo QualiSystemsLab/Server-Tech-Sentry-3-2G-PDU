@@ -30,7 +30,7 @@ class PmPduAutoloader:
         outlet_table = self.snmp_handler.get_table('Sentry3-MIB', 'outletTable')
         for index, attribute in outlet_table.iteritems():
             name = attribute['outletID']
-            relative_address = name
+            relative_address = index
             unique_identifier = '%s.%s' % (pdu_name, name)
 
             rv.resources.append(self.makeres(name, 'Sentry3G2Pdu.PowerSocket', relative_address, unique_identifier))
