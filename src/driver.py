@@ -34,6 +34,11 @@ class Sentry3G2PduDriver (ResourceDriverInterface):
         pass
 
     def get_inventory(self, context):
+        """
+
+        :param ResourceCommandContext context:
+        :return:
+        """
         handler = PmPduHandler(context)
 
         return handler.get_inventory()

@@ -34,7 +34,7 @@ class PmPduAutoloader:
             unique_identifier = '%s.%s' % (pdu_name, name)
 
             rv.resources.append(self.makeres(name, 'Sentry3G2Pdu.PowerSocket', relative_address, unique_identifier))
-            #TODO The outletName should be added as an attribute for the power sockets
+            #TODO Add the outletName as an attribute of the power sockets
             # rv.attributes.append(self.makeattr(relative_address, 'CS_PowerSocket.Model Name', attribute['outletName']))
 
         return rv
