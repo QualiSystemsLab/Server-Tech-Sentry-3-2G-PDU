@@ -1,9 +1,9 @@
 tosca_definitions_version: tosca_simple_yaml_1_0
 
 metadata:
-  template_name: Sentry3G2Pdu
-  template_author: ksaper, upd. tim.s@quali.com
-  template_version: 1.1.1
+  template_name: SentryPdu
+  template_author: Anonymous
+  template_version: 0.1.0
   template_icon: shell-icon.png
 
 description: >
@@ -14,7 +14,7 @@ imports:
 
 node_types:
 
-  vendor.switch.Sentry3G2Pdu:
+  vendor.switch.SentryPdu:
     derived_from: cloudshell.nodes.PDU
     properties:
     #  my_property:
@@ -23,14 +23,14 @@ node_types:
     #    description: Some attribute description
     #    constraints:
     #      - valid_values: [fast, slow]
-      NIC Serial Number:
+      Serial Number:
         type: string
         description: Factory Issued Serial Number of the device
         tags: [setting, read_only]
       System Version:
         type: string
         description: OS/Firmware version on the device
-        tags: [setting, read_only]
+        tags: [configuration, read_only]
     capabilities:
       auto_discovery_capability:
         type: cloudshell.capabilities.AutoDiscovery
@@ -46,10 +46,8 @@ node_types:
             default: Describe the resource shell template
           User:
             type: string
-            default: admn
           Password:
             type: cloudshell.datatypes.Password
-            default: admn
           SNMP Version:
             type: string
             default: v2c
@@ -58,7 +56,7 @@ node_types:
             default: public
           SNMP Write Community:
             type: string
-            default: private
+            default: public
           SNMP V3 User:
             type: string
           SNMP V3 Private Key:
@@ -70,5 +68,5 @@ node_types:
         file: shell-icon.png
         type: tosca.artifacts.File
       driver:
-        file: Sentry3G2PduDriver.zip
+        file: SentryPduDriver.zip
         type: tosca.artifacts.File

@@ -10,7 +10,7 @@ from data_model import *
 class SnmpHandler:
     def __init__(self, context):
         self.context = context
-        self.resource = Sentry3G2Pdu.create_from_context(context)
+        self.resource = SentryPdu.create_from_context(context)
         self.logger = LogHelper.get_logger(context)
 
         self.address = self.context.resource.address

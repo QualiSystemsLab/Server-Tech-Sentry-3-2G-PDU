@@ -10,7 +10,7 @@ from cloudshell.shell.core.context import AutoLoadDetails, InitCommandContext, R
 from log_helper import LogHelper
 
 
-class Sentry3G2PduDriver (ResourceDriverInterface):
+class SentryPduDriver (ResourceDriverInterface):
 
     def __init__(self):
         """
@@ -34,11 +34,6 @@ class Sentry3G2PduDriver (ResourceDriverInterface):
         pass
 
     def get_inventory(self, context):
-        """
-
-        :param ResourceCommandContext context:
-        :return:
-        """
         handler = PmPduHandler(context)
 
         return handler.get_inventory()
@@ -64,28 +59,3 @@ class Sentry3G2PduDriver (ResourceDriverInterface):
 
 
 
-if __name__ == "__main__":
-    import mock
-    from cloudshell.shell.core.driver_context import CancellationContext
-    shell_name = "Sentry3G2Pdu"
-
-    cancellation_context = mock.create_autospec(CancellationContext)
-    context = mock.create_autospec(ResourceCommandContext)
-    context.resource = mock.MagicMock()
-    context.reservation = mock.MagicMock()
-    context.connectivity = mock.MagicMock()
-    context.reservation.reservation_id = "<Reservation ID>"
-    context.resource.address = "<IP>"  # Sentry 3
-    context.resource.name = "Debug_Sentry3"
-    context.resource.attributes = dict()
-    context.resource.attributes["{}.User".format(shell_name)] = "admn"
-    context.resource.attributes["{}.Password".format(shell_name)] = "admn"
-    context.resource.attributes["{}.SNMP Read Community".format(shell_name)] = "public"
-    context.resource.attributes["{}.SNMP Write Community".format(shell_name)] = "private"
-
-    driver = Sentry3G2PduDriver()
-    # print driver.run_custom_command(context, custom_command="sh run", cancellation_context=cancellation_context)
-    driver.initialize(context)
-    result = driver.get_inventory(context)
-
-    print "done"
