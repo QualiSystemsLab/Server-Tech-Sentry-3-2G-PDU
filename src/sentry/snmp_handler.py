@@ -4,28 +4,33 @@ from cloudshell.shell.core.context_utils import get_attribute_by_name
 from cloudshell.snmp.quali_snmp import QualiSnmp
 from cloudshell.snmp.snmp_parameters import SNMPV3Parameters, SNMPV2WriteParameters, SNMPV2ReadParameters
 from pysnmp.smi.rfc1902 import ObjectType
-from log_helper import LogHelper
-from data_model import *
+from cloudshell.core.logger.qs_logger import get_qs_logger
+
 
 class SnmpHandler:
-    def __init__(self, context):
+    def __init__(self, context, resource, logger):
         self.context = context
-        self.resource = SentryPdu.create_from_context(context)
-        self.logger = LogHelper.get_logger(context)
+        self.resource = resource
+        self.logger = logger
+
 
         self.address = self.context.resource.address
-        self.community_read = get_attribute_by_name(context=self.context,
-                                                    attribute_name=self.resource.snmp_read_community) or 'public'
-        self.community_write = get_attribute_by_name(context=self.context,
-                                                     attribute_name=self.resource.snmp_write_community) or 'private'
-        self.password = get_attribute_by_name(context=self.context,
-                                              attribute_name=self.resource.snmp_v3_password) or '',
-        self.user = get_attribute_by_name(context=self.context,
-                                          attribute_name=self.resource.snmp_v3_user) or '',
-        self.version = get_attribute_by_name(context=self.context,
-                                             attribute_name=self.resource.snmp_version) or ''
-        self.private_key = get_attribute_by_name(context=self.context,
-                                                 attribute_name=self.resource.snmp_v3_private_key)
+        self.community_read = self.resource.snmp_read_community or 'public'
+
+        logger.info('Community_read: {0}'.format(self.community_read))
+
+        self.community_write = self.resource.snmp_write_community or 'private'
+
+        logger.info('Community_write: {0}'.format(self.community_write))
+
+        self.password = self.resource.snmp_v3_password or ''
+        self.user =  self.resource.snmp_v3_user or ''
+        self.version = self.resource.snmp_version or ''
+        self.private_key = self.resource.snmp_v3_private_key
+
+        logger.info('snmp_v3_user: {0}'.format(self.user))
+        logger.info('snmp_v3_password: {0}'.format(self.password))
+        logger.info('private_key: {0}'.format(self.private_key))
 
     def get(self, object_identity):
         handler = self._get_handler('get')

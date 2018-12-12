@@ -8,6 +8,7 @@ from cloudshell.power.pdu.power_resource_driver_interface import PowerResourceDr
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
 from cloudshell.shell.core.context import AutoLoadDetails, InitCommandContext, ResourceCommandContext
 from log_helper import LogHelper
+from data_model import *
 
 
 class SentryPduDriver (ResourceDriverInterface):
@@ -24,6 +25,8 @@ class SentryPduDriver (ResourceDriverInterface):
         This is a good place to load and cache the driver configuration, initiate sessions etc.
         :param InitCommandContext context: the context the command runs on
         """
+        self.resource = None
+        self.logger = None
         pass
 
     def cleanup(self):
@@ -34,7 +37,10 @@ class SentryPduDriver (ResourceDriverInterface):
         pass
 
     def get_inventory(self, context):
-        handler = PmPduHandler(context)
+        self.resource = SentryPdu.create_from_context(context)
+        self.logger = LogHelper.get_logger(context)
+
+        handler = PmPduHandler(context, self.resource, self.logger)
 
         return handler.get_inventory()
 
@@ -44,16 +50,25 @@ class SentryPduDriver (ResourceDriverInterface):
         except ValueError:
             raise Exception('Delay must be a numeric value')
 
-        handler = PmPduHandler(context)
+        self.resource = SentryPdu.create_from_context(context)
+        self.logger = LogHelper.get_logger(context)
+
+        handler = PmPduHandler(context, self.resource, self.logger)
         return handler.power_cycle(ports, float(delay))
 
     def PowerOff(self, context, ports):
-        handler = PmPduHandler(context)
+        self.resource = SentryPdu.create_from_context(context)
+        self.logger = LogHelper.get_logger(context)
+
+        handler = PmPduHandler(context, self.resource, self.logger)
 
         return handler.power_off(ports)
 
     def PowerOn(self, context, ports):
-        handler = PmPduHandler(context)
+        self.resource = SentryPdu.create_from_context(context)
+        self.logger = LogHelper.get_logger(context)
+
+        handler = PmPduHandler(context, self.resource, self.logger)
 
         return handler.power_on(ports)
 

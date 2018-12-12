@@ -2,6 +2,8 @@ from cloudshell.shell.core.driver_context import ResourceCommandContext, AutoLoa
     AutoLoadResource
 from collections import defaultdict
 
+from cloudshell.api.cloudshell_api import CloudShellAPISession
+
 
 class LegacyUtils(object):
     def __init__(self):
@@ -73,7 +75,7 @@ class LegacyUtils(object):
 
 
 class SentryPdu(object):
-    def __init__(self, name):
+    def __init__(self, name,api):
         """
         
         """
@@ -81,6 +83,8 @@ class SentryPdu(object):
         self.resources = {}
         self._cloudshell_model_name = 'SentryPdu'
         self._name = name
+        self.api = api
+
 
     def add_sub_resource(self, relative_path, sub_resource):
         self.resources[relative_path] = sub_resource
@@ -94,9 +98,22 @@ class SentryPdu(object):
         :return:
         :rtype SentryPdu
         """
-        result = SentryPdu(name=context.resource.name)
+
+        try:
+            domain = context.reservation.domain
+        except:
+            domain = 'Global'
+
+        api = CloudShellAPISession(context.connectivity.server_address,
+                                   token_id=context.connectivity.admin_auth_token,
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=domain)
+
+
+        result = SentryPdu(name=context.resource.name,api=api)
         for attr in context.resource.attributes:
             result.attributes[attr] = context.resource.attributes[attr]
+
         return result
 
     def create_autoload_details(self, relative_path=''):
@@ -279,7 +296,8 @@ class SentryPdu(object):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.SNMP Read Community'] if 'SentryPdu.SNMP Read Community' in self.attributes else None
+
+        return self.api.DecryptPassword(self.attributes['SentryPdu.SNMP Read Community']).Value if 'SentryPdu.SNMP Read Community' in self.attributes else None
 
     @snmp_read_community.setter
     def snmp_read_community(self, value):
@@ -294,7 +312,8 @@ class SentryPdu(object):
         """
         :rtype: string
         """
-        return self.attributes['SentryPdu.SNMP Write Community'] if 'SentryPdu.SNMP Write Community' in self.attributes else None
+
+        return self.api.DecryptPassword(self.attributes['SentryPdu.SNMP Write Community']).Value if 'SentryPdu.SNMP Write Community' in self.attributes else None
 
     @snmp_write_community.setter
     def snmp_write_community(self, value):

@@ -1,6 +1,5 @@
 from sentry.autoload.pm_pdu_autoloader import PmPduAutoloader
 from sentry.snmp_handler import SnmpHandler
-from log_helper import LogHelper
 from pysnmp.proto.rfc1902 import Integer
 from pysnmp.smi.rfc1902 import ObjectIdentity
 from time import sleep
@@ -12,14 +11,15 @@ class PmPduHandler:
             self.address, port_details = port.split('/')
             self.port_number, self.pdu_number, self.outlet_number = port_details.split('.')
 
-    def __init__(self, context):
+    def __init__(self, context, resource, logger):
         self.context = context
-        self.logger = LogHelper.get_logger(self.context)
-        self.snmp_handler = SnmpHandler(self.context)
+        self.logger = logger
+        self.resource = resource
+        self.snmp_handler = SnmpHandler(self.context, self.resource, self.logger)
 
     def get_inventory(self):
-        autoloader = PmPduAutoloader(self.context)
 
+        autoloader = PmPduAutoloader(self.context)
         return autoloader.autoload()
 
     def power_cycle(self, port_list, delay):
