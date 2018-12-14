@@ -15,7 +15,7 @@ class PmPduHandler:
         self.context = context
         self.logger = logger
         self.resource = resource
-        self.snmp_handler = SnmpHandler(self.context, self.resource, self.logger)
+        self.snmp_handler = SnmpHandler(self.context.resource.address, self.resource, self.logger)
 
     def get_inventory(self):
 
