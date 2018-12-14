@@ -9,7 +9,7 @@ class PmPduAutoloader:
         self.context = context
         self.logger = LogHelper.get_logger(self.context)
         self.resource = SentryPdu.create_from_context(context)
-        self.snmp_handler = SnmpHandler(self.context,self.resource,self.logger).get_raw_handler('get')
+        self.snmp_handler = SnmpHandler(self.context.resource.address,self.resource,self.logger).get_raw_handler('get')
 
     def autoload(self):
         rv = AutoLoadDetails(resources=[], attributes=[])

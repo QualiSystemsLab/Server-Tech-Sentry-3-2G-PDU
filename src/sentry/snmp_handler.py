@@ -1,53 +1,64 @@
 import os
 
-from cloudshell.shell.core.context_utils import get_attribute_by_name
 from cloudshell.snmp.quali_snmp import QualiSnmp
 from cloudshell.snmp.snmp_parameters import SNMPV3Parameters, SNMPV2WriteParameters, SNMPV2ReadParameters
 from pysnmp.smi.rfc1902 import ObjectType
-from cloudshell.core.logger.qs_logger import get_qs_logger
-
 
 class SnmpHandler:
-    def __init__(self, context, resource, logger):
-        self.context = context
-        self.resource = resource
+    """ Generic SNMP Handler for any resource """
+    def __init__(self, address, resource, logger):
+        """
+        Initializes the SnmpHandler to connect to the resource
+
+        :param address: The address of the resource to connect to
+        :type address: str
+        :param resource: The resource object to connect to
+        :param logger:
+        :type logger: logging.Logger
+        """
         self.logger = logger
 
+        self.address = address
+        self.snmp_version = resource.snmp_version or 'v2c'
 
-        self.address = self.context.resource.address
-        self.community_read = self.resource.snmp_read_community or 'public'
+        self.snmp_read_community = resource.snmp_read_community or 'public'
+        self.snmp_write_community = resource.snmp_write_community or 'private'
 
-        logger.info('Community_read: {0}'.format(self.community_read))
+        self.snmp_v3_user = resource.snmp_v3_user or None
+        self.snmp_v3_password = resource.snmp_v3_password or None
+        self.snmp_v3_private_key = resource.snmp_v3_private_key or None
 
-        self.community_write = self.resource.snmp_write_community or 'private'
-
-        logger.info('Community_write: {0}'.format(self.community_write))
-
-        self.password = self.resource.snmp_v3_password or ''
-        self.user =  self.resource.snmp_v3_user or ''
-        self.version = self.resource.snmp_version or ''
-        self.private_key = self.resource.snmp_v3_private_key
-
-        logger.info('snmp_v3_user: {0}'.format(self.user))
-        logger.info('snmp_v3_password: {0}'.format(self.password))
-        logger.info('private_key: {0}'.format(self.private_key))
+        logger.info('\n '.join("%s: %s" % item for item in vars(self).items()))
 
     def get(self, object_identity):
-        handler = self._get_handler('get')
+        """ Returns the value at object_identity """
+        return self._handler('get').get(ObjectType(object_identity))
 
-        return handler.get(ObjectType(object_identity))
-
+    # TODO function untested
     def set(self, object_identity, value):
-        handler = self._get_handler('set')
-
+        """ Sets the value at object_identity"""
+        # TODO This should not use the internal _command function
+        handler = self._handler('set')
         return handler._command(handler.cmd_gen.setCmd, ObjectType(object_identity, value))
 
     def get_raw_handler(self, action):
-        return self._get_handler(action)
+        """"
+        Creates & returns an SNMP handler for the desired action-set or get
 
-    def _get_handler(self, action):
+        :param action: The desired action. 'get' or 'set'
+        :return:
+        :rtype: QualiSnmp
+        """
+        return self._handler(action)
+
+    def _handler(self, action):
+        """
+        Sets up an SNMP handler with the current SNMPHandler state
+
+        :rtype: QualiSnmp
+        """
         mib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'mibs'))
-        snmp_parameters = self._get_snmp_parameters(action)
+        snmp_parameters = self._snmp_parameters(action)
 
         handler = QualiSnmp(snmp_parameters, self.logger)
         handler.update_mib_sources(mib_path)
@@ -55,14 +66,22 @@ class SnmpHandler:
 
         return handler
 
-    def _get_snmp_parameters(self, action):
-        if '3' in self.version:
-            return SNMPV3Parameters(ip=self.address, snmp_user=self.user, snmp_password=self.password, snmp_private_key=self.private_key)
-        else:
+    def _snmp_parameters(self, action):
+        """ Returns the SNMPHandler state variables for the specific action"""
+        if self.snmp_version == 'v3':
+            return SNMPV3Parameters(ip=self.address,
+                                    snmp_user=self.snmp_v3_user,
+                                    snmp_password=self.snmp_v3_password,
+                                    snmp_private_key=self.snmp_v3_private_key)
+        if self.snmp_version.startswith('v2'):
             if action.lower() == 'set':
-                # community = self.community_write
-                return SNMPV2WriteParameters(ip=self.address, snmp_write_community=self.community_write)
+                return SNMPV2WriteParameters(ip=self.address,
+                                             snmp_write_community=self.snmp_write_community)
+            if action.lower() == 'get':
+                return SNMPV2ReadParameters(ip=self.address,
+                                            snmp_read_community=self.snmp_read_community)
             else:
-                # community = self.community_read
-                return SNMPV2ReadParameters(ip=self.address, snmp_read_community=self.community_read)
-            # return SNMPV2Parameters(ip=self.address, snmp_community=community)
+                ValueError("Function argument 'action' should be either 'get' or 'set'")
+        else:
+            ValueError("Unknown SNMP version set on resource")
+
