@@ -1,12 +1,6 @@
-# from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
-# from cloudshell.shell.core.driver_context import InitCommandContext, ResourceCommandContext, AutoLoadResource, \
-#     AutoLoadAttribute, AutoLoadDetails, CancellationContext
-#from data_model import *  # run 'shellfoundry generate' to generate data model classes
-
 from sentry.pm_pdu_handler import PmPduHandler
-from cloudshell.power.pdu.power_resource_driver_interface import PowerResourceDriverInterface
 from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterface
-from cloudshell.shell.core.context import AutoLoadDetails, InitCommandContext, ResourceCommandContext
+from cloudshell.shell.core.context import InitCommandContext
 from log_helper import LogHelper
 from data_model import *
 
@@ -21,12 +15,12 @@ class SentryPduDriver (ResourceDriverInterface):
 
     def initialize(self, context):
         """
-        Initialize the driver session, this function is called everytime a new instance of the driver is created
+        Initialize is empty since we're storing no state
+        Initialize the driver session, this function is called every time a new instance of the driver is created
         This is a good place to load and cache the driver configuration, initiate sessions etc.
+
         :param InitCommandContext context: the context the command runs on
         """
-        self.resource = None
-        self.logger = None
         pass
 
     def cleanup(self):
@@ -37,38 +31,61 @@ class SentryPduDriver (ResourceDriverInterface):
         pass
 
     def get_inventory(self, context):
-        self.resource = SentryPdu.create_from_context(context)
-        self.logger = LogHelper.get_logger(context)
+        resource = SentryPdu.create_from_context(context)
+        logger = LogHelper.get_logger(context)
 
-        handler = PmPduHandler(context, self.resource, self.logger)
+        handler = PmPduHandler(context, resource, logger)
 
         return handler.get_inventory()
 
     def PowerCycle(self, context, ports, delay):
+        """
+
+        :param context:
+        :param ports:
+        :type  ports: list of str
+        :param delay:
+        :type  delay: float
+        :return:
+        """
         try:
             float(delay)
         except ValueError:
             raise Exception('Delay must be a numeric value')
 
-        self.resource = SentryPdu.create_from_context(context)
-        self.logger = LogHelper.get_logger(context)
+        resource = SentryPdu.create_from_context(context)
+        logger = LogHelper.get_logger(context)
 
-        handler = PmPduHandler(context, self.resource, self.logger)
+        handler = PmPduHandler(context, resource, logger)
         return handler.power_cycle(ports, float(delay))
 
     def PowerOff(self, context, ports):
-        self.resource = SentryPdu.create_from_context(context)
-        self.logger = LogHelper.get_logger(context)
+        """
 
-        handler = PmPduHandler(context, self.resource, self.logger)
+        :param context:
+        :param ports:
+        :type  ports: list of str
+        :return:
+        """
+        resource = SentryPdu.create_from_context(context)
+        logger = LogHelper.get_logger(context)
+
+        handler = PmPduHandler(context, resource, logger)
 
         return handler.power_off(ports)
 
     def PowerOn(self, context, ports):
-        self.resource = SentryPdu.create_from_context(context)
-        self.logger = LogHelper.get_logger(context)
+        """
 
-        handler = PmPduHandler(context, self.resource, self.logger)
+        :param context:
+        :param ports:
+        :type  ports: list of str
+        :return:
+        """
+        resource = SentryPdu.create_from_context(context)
+        logger = LogHelper.get_logger(context)
+
+        handler = PmPduHandler(context, resource, logger)
 
         return handler.power_on(ports)
 
