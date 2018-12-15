@@ -72,5 +72,37 @@ class SentryPduDriver (ResourceDriverInterface):
 
         return handler.power_on(ports)
 
+if __name__ == "__main__":
+    import mock
+    from cloudshell.shell.core.driver_context import CancellationContext
+    import cloudshell.api.cloudshell_api as cs_api
+    shell_name = "SentryPdu"
 
+    cancellation_context = mock.create_autospec(CancellationContext)
+    context = mock.create_autospec(ResourceCommandContext)
+    context.resource = mock.MagicMock()
+    context.reservation = mock.MagicMock()
+    context.connectivity = mock.MagicMock()
+    context.reservation.reservation_id = "<Reservation ID>"
+    context.resource.address = "10.16.145.249"  # Sentry 3
+    context.resource.name = "Debug_Sentry3"
+    context.resource.attributes = dict()
+    context.resource.attributes["{}.User".format(shell_name)] = "admn"
+    context.resource.attributes["{}.Password".format(shell_name)] = "admn"
+    context.resource.attributes["{}.SNMP Read Community".format(shell_name)] = "public"
+    context.resource.attributes["{}.SNMP Write Community".format(shell_name)] = "private"
+    cs_session = cs_api.CloudShellAPISession("localhost",
+                                             "admin",
+                                             "admin",
+                                             domain="Global",
+                                             port=8029)
+    context.connectivity.cloudshell_api_port = cs_session.port
+    context.connectivity.server_address = cs_session.host
+    context.connectivity.admin_auth_token = cs_session.token_id
 
+    driver = SentryPduDriver()
+    # print driver.run_custom_command(context, custom_command="sh run", cancellation_context=cancellation_context)
+    driver.initialize(context)
+    result = driver.get_inventory(context)
+
+    print "done"
