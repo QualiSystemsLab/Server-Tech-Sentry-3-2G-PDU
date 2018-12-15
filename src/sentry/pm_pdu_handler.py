@@ -12,12 +12,21 @@ class PmPduHandler:
             self.port_number, self.pdu_number, self.outlet_number = port_details.split('.')
 
     def __init__(self, context, resource, logger):
+        """
+
+        :param context:
+        :param resource:
+        :param logger:
+        :type logger: logging.Logger
+        """
         self.context = context
         self.logger = logger
         self.resource = resource
         self.snmp_handler = SnmpHandler(self.context.resource.address, self.resource, self.logger)
 
     def get_inventory(self):
+        """ Reads & returns the resource structure from the PDU via SNMP """
+        return PmPduAutoloader(self.context).autoload()
 
 
     def power_cycle(self, port_list, delay):
