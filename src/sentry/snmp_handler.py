@@ -28,7 +28,7 @@ class SnmpHandler:
         self.snmp_v3_password = resource.snmp_v3_password or None
         self.snmp_v3_private_key = resource.snmp_v3_private_key or None
 
-        logger.info('\n '.join("%s: %s" % item for item in vars(self).items()))
+        logger.info('SNMP Handler Created\n    ' + '\n    '.join("%s: %s" % item for item in sorted(vars(self).items())))
 
     def get(self, object_identity):
         """ Returns the value at object_identity """

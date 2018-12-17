@@ -34,7 +34,7 @@ class SentryPduDriver (ResourceDriverInterface):
         resource = SentryPdu.create_from_context(context)
         logger = LogHelper.get_logger(context)
 
-        handler = PmPduHandler(context, resource, logger)
+        handler = PmPduHandler(context.resource.address, resource, logger)
 
         return handler.get_inventory()
 
@@ -56,7 +56,7 @@ class SentryPduDriver (ResourceDriverInterface):
         resource = SentryPdu.create_from_context(context)
         logger = LogHelper.get_logger(context)
 
-        handler = PmPduHandler(context, resource, logger)
+        handler = PmPduHandler(context.resource.address, resource, logger)
         return handler.power_cycle(ports, float(delay))
 
     def PowerOff(self, context, ports):
@@ -70,7 +70,7 @@ class SentryPduDriver (ResourceDriverInterface):
         resource = SentryPdu.create_from_context(context)
         logger = LogHelper.get_logger(context)
 
-        handler = PmPduHandler(context, resource, logger)
+        handler = PmPduHandler(context.resource.address, resource, logger)
 
         return handler.power_off(ports)
 
@@ -85,7 +85,7 @@ class SentryPduDriver (ResourceDriverInterface):
         resource = SentryPdu.create_from_context(context)
         logger = LogHelper.get_logger(context)
 
-        handler = PmPduHandler(context, resource, logger)
+        handler = PmPduHandler(context.resource.address, resource, logger)
 
         return handler.power_on(ports)
 

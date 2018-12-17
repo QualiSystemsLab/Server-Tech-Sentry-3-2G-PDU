@@ -9,24 +9,28 @@ class PmPduHandler:
     class Port:
         def __init__(self, port):
             self.address, port_details = port.split('/')
+            # ToDo Verify port_number is the correct name for the first value
             self.port_number, self.pdu_number, self.outlet_number = port_details.split('.')
 
-    def __init__(self, context, resource, logger):
+    def __init__(self, address, resource, logger):
         """
 
-        :param context:
-        :param resource:
+        :param address: The address of the resource to connect to
+        :type  address: str
+        :param resource: The resource object to connect to
         :param logger:
-        :type logger: logging.Logger
+        :type  logger: logging.Logger
         """
-        self.context = context
-        self.logger = logger
+        self.address = address
         self.resource = resource
-        self.snmp_handler = SnmpHandler(self.context.resource.address, self.resource, self.logger)
+        self.logger = logger
+
+        self.snmp_handler = SnmpHandler(self.address, self.resource, self.logger)
 
     def get_inventory(self):
         """ Reads & returns the resource structure from the PDU via SNMP """
-        return PmPduAutoloader(self.context).autoload()
+        return PmPduAutoloader(self.snmp_handler, self.logger).autoload()
+#        return PmPduAutoloader(self.address, self.resource, self.logger).autoload()
 
 
     def power_cycle(self, port_list, delay):
@@ -41,13 +45,11 @@ class PmPduHandler:
         """
         self.logger.info("Power cycle starting for ports %s" % port_list)
 
-        # self.logger.info("Powering off ports %s" % port_list)
         self.power_off(port_list)
 
         self.logger.info("Sleeping %f second(s)" % delay)
         sleep(delay)
 
-        # self.logger.info("Powering on ports %s" % port_list)
         self.power_on(port_list)
 
         self.logger.info("Power cycle complete for ports %s" % port_list)
@@ -57,7 +59,12 @@ class PmPduHandler:
         for raw_port in port_list:
             self.logger.info("Powering off port %s" % raw_port)
             port = self.Port(raw_port)
-            self.snmp_handler.set(ObjectIdentity('Sentry3-MIB', 'outletControlAction', port.port_number, port.pdu_number, port.outlet_number),
+            # TODO Change the Integer(2) harcoding to use the named value "off"
+            self.snmp_handler.set(ObjectIdentity('Sentry3-MIB',
+                                                 'outletControlAction',
+                                                 port.port_number,
+                                                 port.pdu_number,
+                                                 port.outlet_number),
                                   Integer(2))
 
     def power_on(self, port_list):
@@ -65,5 +72,10 @@ class PmPduHandler:
         for raw_port in port_list:
             self.logger.info("Powering on port %s" % raw_port)
             port = self.Port(raw_port)
-            self.snmp_handler.set(ObjectIdentity('Sentry3-MIB', 'outletControlAction', port.port_number, port.pdu_number, port.outlet_number),
+            # TODO Change the Integer(1) hardcoding to use the named value "on"
+            self.snmp_handler.set(ObjectIdentity('Sentry3-MIB',
+                                                 'outletControlAction',
+                                                 port.port_number,
+                                                 port.pdu_number,
+                                                 port.outlet_number),
                                   Integer(1))

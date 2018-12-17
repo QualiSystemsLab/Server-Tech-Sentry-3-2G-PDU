@@ -1,15 +1,16 @@
-from sentry.snmp_handler import SnmpHandler
+# from sentry.snmp_handler import SnmpHandler
 from cloudshell.shell.core.driver_context import AutoLoadResource, AutoLoadDetails, AutoLoadAttribute
-from log_helper import LogHelper
-from data_model import *
+# from cloudshell.shell.core.driver_context import AutoLoadDetails
+# from data_model import *
 
 
 class PmPduAutoloader:
-    def __init__(self, context):
-        self.context = context
-        self.logger = LogHelper.get_logger(self.context)
-        self.resource = SentryPdu.create_from_context(context)
-        self.snmp_handler = SnmpHandler(self.context.resource.address,self.resource,self.logger).get_raw_handler('get')
+#    def __init__(self, address, resource, logger):
+    def __init__(self, snmp_handler, logger):
+        self.snmp_handler = snmp_handler.get_raw_handler('get')
+        self.logger = logger
+
+#        self.snmp_handler = SnmpHandler(address, resource, self.logger).get_raw_handler('get')
 
     def autoload(self):
         rv = AutoLoadDetails(resources=[], attributes=[])
