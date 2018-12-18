@@ -60,7 +60,19 @@ class SnmpHandler:
         mib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'mibs'))
         snmp_parameters = self._snmp_parameters(action)
 
-        handler = QualiSnmp(snmp_parameters, self.logger)
+        try:
+            handler = QualiSnmp(snmp_parameters, self.logger)
+        except Exception as e:
+            if action.lower() == 'get':
+                error = '''Unable to communicate via SNMP read to resource
+                Please verify the SNMP read community and that the device is accessible'''
+            elif action.lower() == 'set':
+                error = '''Unable to communicate via SNMP write to resource
+                Please verify the SNMP write community and that the device is accessible'''
+            else:
+                error = '''Unable to communicate via SNMP to resource
+                Please verify the SNMP communities and that the device is accessible'''
+            raise Exception(error + '\nDownstream error: ' + str(e))
         handler.update_mib_sources(mib_path)
         handler.load_mib(['Sentry3-MIB'])
 
