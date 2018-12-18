@@ -26,7 +26,7 @@ class PmPduAutoloader:
 
         outlet_table = self.snmp_handler.get_table('Sentry3-MIB', 'outletTable')
         for index, attribute in outlet_table.iteritems():
-            name = 'Outlet %s' % index
+            name = 'Outlet %s' % attribute['outletID']
             relative_address = index
             unique_identifier = '%s.%s' % (pdu_name, index)
 
