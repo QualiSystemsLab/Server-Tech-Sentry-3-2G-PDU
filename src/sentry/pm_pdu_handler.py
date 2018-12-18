@@ -10,6 +10,7 @@ class PmPduHandler:
         def __init__(self, port):
             self.address, port_details = port.split('/')
             # ToDo Verify port_number is the correct name for the first value
+            # ToDo value checking on port_details. Should be SNMP index value
             self.port_number, self.pdu_number, self.outlet_number = port_details.split('.')
 
     def __init__(self, address, resource, logger):
@@ -40,7 +41,7 @@ class PmPduHandler:
         :param port_list: List of ports' relative addresses to power cycle
         :type port_list: list of str
         :param delay: number of seconds to delay between power off and power on
-        :type delay: int
+        :type delay: float
         :return: None
         """
         self.logger.info("Power cycle starting for ports %s" % port_list)
