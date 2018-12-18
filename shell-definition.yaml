@@ -46,8 +46,10 @@ node_types:
             default: Describe the resource shell template
           User:
             type: string
+            default: admn
           Password:
             type: cloudshell.datatypes.Password
+            default: admn
           SNMP Version:
             type: string
             default: v2c
@@ -56,7 +58,7 @@ node_types:
             default: public
           SNMP Write Community:
             type: string
-            default: public
+            default: private
           SNMP V3 User:
             type: string
           SNMP V3 Private Key:
