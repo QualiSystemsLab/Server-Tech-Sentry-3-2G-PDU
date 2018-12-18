@@ -3,6 +3,7 @@ from cloudshell.shell.core.resource_driver_interface import ResourceDriverInterf
 from cloudshell.shell.core.context import InitCommandContext
 from log_helper import LogHelper
 from data_model import *
+from cloudshell.api.cloudshell_api import CloudShellAPISession
 
 
 class SentryPduDriver (ResourceDriverInterface):
@@ -31,7 +32,8 @@ class SentryPduDriver (ResourceDriverInterface):
         pass
 
     def get_inventory(self, context):
-        resource = SentryPdu.create_from_context(context)
+        resource = self._decrypt_resource_passwords(context,
+            SentryPdu.create_from_context(context))
         logger = LogHelper.get_logger(context)
 
         handler = PmPduHandler(context.resource.address, resource, logger)
@@ -53,10 +55,12 @@ class SentryPduDriver (ResourceDriverInterface):
         except ValueError:
             raise Exception('Delay must be a numeric value')
 
-        resource = SentryPdu.create_from_context(context)
+        resource = self._decrypt_resource_passwords(context,
+            SentryPdu.create_from_context(context))
         logger = LogHelper.get_logger(context)
 
         handler = PmPduHandler(context.resource.address, resource, logger)
+
         return handler.power_cycle(ports, float(delay))
 
     def PowerOff(self, context, ports):
@@ -67,7 +71,9 @@ class SentryPduDriver (ResourceDriverInterface):
         :type  ports: list of str
         :return:
         """
-        resource = SentryPdu.create_from_context(context)
+
+        resource = self._decrypt_resource_passwords(context,
+            SentryPdu.create_from_context(context))
         logger = LogHelper.get_logger(context)
 
         handler = PmPduHandler(context.resource.address, resource, logger)
@@ -78,16 +84,59 @@ class SentryPduDriver (ResourceDriverInterface):
         """
 
         :param context:
-        :param ports:
+        :param ports: list of port addresses to power cycle
         :type  ports: list of str
         :return:
         """
-        resource = SentryPdu.create_from_context(context)
+        resource = self._decrypt_resource_passwords(context,
+            SentryPdu.create_from_context(context))
         logger = LogHelper.get_logger(context)
 
         handler = PmPduHandler(context.resource.address, resource, logger)
 
         return handler.power_on(ports)
+
+    def _decrypt_resource_passwords(self, context, resource):
+        """
+
+        :param context:
+        :param resource: SentryPdu resource object with encrypted passwords
+        :type  resource: SentryPdu
+        :return: the resource object with the passwords decrypted
+        :rtype : SentryPdu
+        """
+        logger = LogHelper.get_logger(context)
+
+        try:
+            domain = context.reservation.domain
+        except:
+            domain = 'Global'
+
+        logger.info("Creating API Session")
+        api = CloudShellAPISession(context.connectivity.server_address,
+                                   token_id=context.connectivity.admin_auth_token,
+                                   port=context.connectivity.cloudshell_api_port,
+                                   domain=domain)
+
+        attributes_to_decrypt = ('snmp_write_community', 'snmp_read_community',
+                                 'snmp_v3_password', 'snmp_v3_private_key',
+                                 'password')
+        for pass_attribute in attributes_to_decrypt:
+            logger.info("Attempting decryption of password value at {}".format(pass_attribute))
+            value = getattr(resource, pass_attribute)
+            if value is None:
+                # logger.info("    Skipping Decryption of {}: Value is None".format(pass_attribute))
+                continue
+            elif value.endswith('=='):
+                # logger.info("    Decrypting {}: Detected encrypted value {}".format(pass_attribute, value))
+                setattr(resource, pass_attribute, api.DecryptPassword(value).Value)
+                # logger.info("        Got: {}".format(getattr(resource, pass_attribute)))
+                continue
+            else:
+                # logger.info("    Skipping Decryption of {}: Unable to determine type for: {}".format(pass_attribute, value))
+                pass
+
+        return resource
 
 if __name__ == "__main__":
     import mock
