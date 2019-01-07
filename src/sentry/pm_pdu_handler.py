@@ -54,6 +54,7 @@ class PmPduHandler:
         self.power_on(port_list)
 
         self.logger.info("Power cycle complete for ports %s" % port_list)
+        return "Power Cycle: Success"
 
     def power_off(self, port_list):
         self.logger.info("Power off called for ports %s" % port_list)
@@ -67,6 +68,7 @@ class PmPduHandler:
                                                  port.pdu_number,
                                                  port.outlet_number),
                                   Integer(2))
+        return "Power Off: Success"
 
     def power_on(self, port_list):
         self.logger.info("Power on called for ports %s" % port_list)
@@ -80,3 +82,5 @@ class PmPduHandler:
                                                  port.pdu_number,
                                                  port.outlet_number),
                                   Integer(1))
+
+        return "Power On: Success"
