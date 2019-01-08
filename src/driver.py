@@ -150,7 +150,7 @@ if __name__ == "__main__":
     context.reservation = mock.MagicMock()
     context.connectivity = mock.MagicMock()
     context.reservation.reservation_id = "<Reservation ID>"
-    context.resource.address = "10.16.145.249"  # Sentry 3
+    context.resource.address = "<IP Address>"  # Sentry 3
     context.resource.name = "Debug_Sentry3"
     context.resource.attributes = dict()
     context.resource.attributes["{}.User".format(shell_name)] = "admn"
