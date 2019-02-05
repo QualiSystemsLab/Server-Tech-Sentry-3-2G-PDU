@@ -68,6 +68,12 @@ class PmPduHandler:
                                                  port.pdu_number,
                                                  port.outlet_number),
                                   Integer(2))
+            status = self.snmp_handler.get(('Sentry3-MIB',
+                                            'outletStatus',
+                                            port.port_number,
+                                            port.pdu_number,
+                                            port.outlet_number))['outletStatus']
+            self.logger.info("Port {} is now: ".format(raw_port) + status)
         return "Power Off: Success"
 
     def power_on(self, port_list):
@@ -82,5 +88,11 @@ class PmPduHandler:
                                                  port.pdu_number,
                                                  port.outlet_number),
                                   Integer(1))
+            status = self.snmp_handler.get(('Sentry3-MIB',
+                                            'outletStatus',
+                                            port.port_number,
+                                            port.pdu_number,
+                                            port.outlet_number))['outletStatus']
+            self.logger.info("Port {} is now: ".format(raw_port) + status)
 
         return "Power On: Success"
