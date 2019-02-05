@@ -32,7 +32,7 @@ class SnmpHandler:
 
     def get(self, object_identity):
         """ Returns the value at object_identity """
-        return self._handler('get').get(ObjectType(object_identity))
+        return self._handler('get').get(object_identity)
 
     # TODO function untested
     def set(self, object_identity, value):
